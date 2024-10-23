@@ -1,0 +1,9 @@
+test {
+  useJUnitPlatform()
+}
+
+tasks.register("unitTest", Test) {
+  useJUnitPlatform {
+    excludeTags "int"
+  }
+}

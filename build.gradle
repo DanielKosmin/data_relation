@@ -12,6 +12,11 @@ plugins {
 	id 'checkstyle'
 }
 
+apply from: 'gradle/checkstyle.gradle'
+apply from: 'gradle/precommit.gradle'
+apply from: 'gradle/spotless.gradle'
+apply from: 'gradle/test.gradle'
+
 group = 'com.kosmin.project'
 version = '0.0.1-SNAPSHOT'
 
@@ -47,31 +52,4 @@ dependencies {
 	testImplementation 'org.awaitility:awaitility:4.2.2'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'org.springframework.boot:spring-boot-starter-webflux'
-}
-
-spotless {
-	java {
-		googleJavaFormat()
-	}
-}
-
-checkstyle {
-	toolVersion = '10.12.0' // Set Checkstyle version
-	configFile = file("$rootDir/src/main/resources/checkstyle.xml")
-}
-
-copy {
-	from new File(rootProject.rootDir, 'scripts/pre-commit')
-	into new File(rootProject.rootDir, '.git/hooks')
-	fileMode 0777
-}
-
-test {
-	useJUnitPlatform()
-}
-
-tasks.register("unitTest", Test) {
-	useJUnitPlatform {
-		excludeTags "int"
-	}
 }

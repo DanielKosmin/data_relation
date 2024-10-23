@@ -1,0 +1,4 @@
+checkstyle {
+  toolVersion = '10.12.0' // Set Checkstyle version
+  configFile = file("$rootDir/src/main/resources/checkstyle.xml")
+}
