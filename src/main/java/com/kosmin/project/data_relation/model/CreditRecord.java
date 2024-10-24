@@ -8,12 +8,19 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import java.math.BigDecimal;
 import java.util.Date;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "credit_records")
 @Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class CreditRecord {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -36,5 +43,5 @@ public class CreditRecord {
   private String transactionType;
 
   @Column(nullable = false)
-  private double transactionAmount;
+  private BigDecimal transactionAmount;
 }
