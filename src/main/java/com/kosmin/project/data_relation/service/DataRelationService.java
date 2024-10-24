@@ -32,11 +32,7 @@ public class DataRelationService {
                                 .contains(Type.CHECKING.getValue().toLowerCase())))
             .isPresent();
     if (validFile) {
-      asyncCsvProcessingService.handleCsvProcessing(
-          file,
-          (file.getOriginalFilename().toLowerCase().contains(Type.CREDIT.getValue().toLowerCase())
-              ? Type.CREDIT
-              : Type.CHECKING));
+      asyncCsvProcessingService.handleCsvProcessing(file);
       return ResponseEntity.accepted()
           .body(
               Response.builder()

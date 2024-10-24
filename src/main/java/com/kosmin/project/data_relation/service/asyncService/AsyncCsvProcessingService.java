@@ -17,6 +17,7 @@ import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -31,7 +32,7 @@ public class AsyncCsvProcessingService {
 
   @Async
   @SneakyThrows
-  public void handleCsvProcessing(MultipartFile file, Type type) {
+  public void handleCsvProcessing(MultipartFile file) {
     try (BufferedReader reader = new BufferedReader(new InputStreamReader(file.getInputStream()))) {
       final CsvToBean<CsvModel> csvToBean =
           new CsvToBeanBuilder<CsvModel>(reader)
@@ -45,9 +46,11 @@ public class AsyncCsvProcessingService {
                   saveTableRow(
                       csvModel,
                       DataRelationUtil.parseTransactionDate(csvModel.getTransactionDate()),
-                      type));
+                      StringUtils.isAllBlank(csvModel.getCreditTransactionCategory())
+                          ? Type.CHECKING
+                          : Type.CREDIT));
     }
-    log.info("Completed Insertion(s) into {} Table", type);
+    log.info("Completed Table Insertions");
   }
 
   private void saveTableRow(CsvModel csvModel, Optional<Date> formattedDate, Type type) {
