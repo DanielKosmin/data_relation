@@ -17,7 +17,6 @@ public class CsvModel {
 
   // Checking Models
   @CsvBindByName(column = "Transaction Description")
-  @CsvBindByName(column = "Description")
   private String checkingTransactionDescription;
 
   @CsvBindByName(column = "Transaction Type")
