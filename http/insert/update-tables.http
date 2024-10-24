@@ -1,0 +1,17 @@
+### POST upload banking csv
+POST {{DATA_RELATION_BASE_URL}}/expenses/v1/insert
+Content-Type: multipart/form-data; boundary=boundary
+
+--boundary
+Content-Disposition: form-data; name="file"; filename="checking_records.csv"
+
+< checking_records.csv
+
+### POST upload banking csv
+POST {{DATA_RELATION_BASE_URL}}/expenses/v1/insert
+Content-Type: multipart/form-data; boundary=boundary
+
+--boundary
+Content-Disposition: form-data; name="file"; filename="credit_records.csv"
+
+< credit_records.csv
