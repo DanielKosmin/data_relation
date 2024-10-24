@@ -8,7 +8,7 @@ import java.util.Optional;
 public class DataRelationUtil {
 
   public static Optional<Date> parseTransactionDate(String dateString) {
-    final String[] formats = {"MM/dd/yy", "MM/dd/yyyy"}; // Add more formats if necessary
+    final String[] formats = {"MM/dd/yy", "MM/dd/yyyy"};
     for (String format : formats) {
       try {
         final SimpleDateFormat sdf = new SimpleDateFormat(format);
@@ -17,7 +17,6 @@ public class DataRelationUtil {
         // Continue trying other formats
       }
     }
-    // Return an empty Optional if all formats fail
     return Optional.empty();
   }
 }

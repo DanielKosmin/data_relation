@@ -21,14 +21,14 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class CreditRecord {
+public class CreditDbModel {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long creditRecordId;
 
   @ManyToOne
   @JoinColumn(name = "banking_record_id")
-  private CheckingRecord checkingRecord;
+  private CheckingDbModel checkingDbModel;
 
   @Column(nullable = false)
   private Date transactionDate;

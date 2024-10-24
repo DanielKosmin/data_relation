@@ -19,7 +19,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class CheckingRecord {
+public class CheckingDbModel {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
