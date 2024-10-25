@@ -1,10 +1,9 @@
 package com.kosmin.project.data_relation.service;
 
 import com.kosmin.project.data_relation.model.Response;
-import com.kosmin.project.data_relation.model.Status;
-import com.kosmin.project.data_relation.model.Type;
 import com.kosmin.project.data_relation.service.asyncService.AsyncCsvProcessingService;
-import java.util.Optional;
+import com.kosmin.project.data_relation.util.DataRelationUtil;
+import com.kosmin.project.data_relation.util.ResponseEntityUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import org.springframework.http.ResponseEntity;
@@ -19,35 +18,13 @@ public class DataRelationService {
 
   @SneakyThrows
   public ResponseEntity<Response> insertTableRecords(MultipartFile file) {
-    final boolean validFile =
-        Optional.ofNullable(file)
-            .filter(f -> !f.isEmpty())
-            .map(MultipartFile::getOriginalFilename)
-            .filter(
-                fileName ->
-                    fileName.endsWith(".csv")
-                        && (fileName.toLowerCase().contains(Type.CREDIT.getValue().toLowerCase())
-                            || fileName
-                                .toLowerCase()
-                                .contains(Type.CHECKING.getValue().toLowerCase())))
-            .isPresent();
-    if (validFile) {
+    if (DataRelationUtil.isValidCsvFile(file)) {
       asyncCsvProcessingService.handleCsvProcessing(file);
-      return ResponseEntity.accepted()
-          .body(
-              Response.builder()
-                  .status(Status.SUCCESS.getValue())
-                  .message("CSV File Successfully received and processing")
-                  .build());
+      return ResponseEntityUtil.acceptedResponse("CSV File Successfully received and processing");
     } else {
-      return ResponseEntity.badRequest()
-          .body(
-              Response.builder()
-                  .status(Status.FAILED.getValue())
-                  .errorMessage(
-                      "Input must be a non empty csv file with filename including either "
-                          + "'credit' or 'checking' to indicate which table to insert")
-                  .build());
+      return ResponseEntityUtil.badRequestResponse(
+          "Input must be a non empty csv file with filename including either "
+              + "'credit' or 'checking' to indicate which table to insert");
     }
   }
 }
