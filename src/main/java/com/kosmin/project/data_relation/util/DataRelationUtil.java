@@ -3,6 +3,7 @@ package com.kosmin.project.data_relation.util;
 import com.kosmin.project.data_relation.model.Type;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.Optional;
 import org.springframework.web.multipart.MultipartFile;
@@ -25,16 +26,27 @@ public class DataRelationUtil {
         .isPresent();
   }
 
-  public static Optional<Date> parseTransactionDate(String dateString) {
+  public static Type fileType(MultipartFile file) {
+    return Optional.ofNullable(file)
+        .map(MultipartFile::getOriginalFilename)
+        .flatMap(
+            fileName ->
+                Arrays.stream(Type.values())
+                    .filter(type -> fileName.toLowerCase().contains(type.getValue().toLowerCase()))
+                    .findFirst())
+        .orElse(null);
+  }
+
+  public static Date parseTransactionDate(String dateString) {
     final String[] formats = {"MM/dd/yy", "MM/dd/yyyy"};
     for (String format : formats) {
       try {
         final SimpleDateFormat sdf = new SimpleDateFormat(format);
-        return Optional.of(sdf.parse(dateString));
+        return sdf.parse(dateString);
       } catch (ParseException e) {
         // Continue trying other formats
       }
     }
-    return Optional.empty();
+    return null;
   }
 }

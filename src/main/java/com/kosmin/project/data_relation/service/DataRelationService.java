@@ -1,9 +1,11 @@
 package com.kosmin.project.data_relation.service;
 
+import static com.kosmin.project.data_relation.util.DataRelationUtil.isValidCsvFile;
+import static com.kosmin.project.data_relation.util.ResponseEntityUtil.acceptedResponse;
+import static com.kosmin.project.data_relation.util.ResponseEntityUtil.badRequestResponse;
+
 import com.kosmin.project.data_relation.model.Response;
 import com.kosmin.project.data_relation.service.asyncService.AsyncCsvProcessingService;
-import com.kosmin.project.data_relation.util.DataRelationUtil;
-import com.kosmin.project.data_relation.util.ResponseEntityUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import org.springframework.http.ResponseEntity;
@@ -18,11 +20,11 @@ public class DataRelationService {
 
   @SneakyThrows
   public ResponseEntity<Response> insertTableRecords(MultipartFile file) {
-    if (DataRelationUtil.isValidCsvFile(file)) {
+    if (isValidCsvFile(file)) {
       asyncCsvProcessingService.handleCsvProcessing(file);
-      return ResponseEntityUtil.acceptedResponse("CSV File Successfully received and processing");
+      return acceptedResponse("CSV File Successfully received and processing");
     } else {
-      return ResponseEntityUtil.badRequestResponse(
+      return badRequestResponse(
           "Input must be a non empty csv file with filename including either "
               + "'credit' or 'checking' to indicate which table to insert");
     }

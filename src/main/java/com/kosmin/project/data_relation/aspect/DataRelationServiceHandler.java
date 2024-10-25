@@ -1,7 +1,8 @@
 package com.kosmin.project.data_relation.aspect;
 
+import static com.kosmin.project.data_relation.util.ResponseEntityUtil.internalServerErrorResponse;
+
 import com.kosmin.project.data_relation.model.Response;
-import com.kosmin.project.data_relation.util.ResponseEntityUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -27,6 +28,6 @@ public class DataRelationServiceHandler {
 
   private ResponseEntity<Response> handleException(Exception e) {
     log.error(e.getMessage());
-    return ResponseEntityUtil.internalServerErrorResponse(e.getMessage());
+    return internalServerErrorResponse(e.getMessage());
   }
 }
