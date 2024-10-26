@@ -1,12 +1,33 @@
 # Data Relation Project
 
-## Get a Postgres db locally
+## Initialize the project with data to begin interacting with it
 
-##### Step 1 clean existing docker resources
+##### Step 1 create an application-local-yml
+
+- in `src/main/resources`, create a file called `application-local.yml` and add the following content
+
 ```bash 
-docker stop $(docker ps -aq) && docker rm $(docker ps -aq) && docker system prune -a --volumes -f
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/your_database_name
+    username: your_username
+    password: your_password
 ```
-#### Step 2: Run Docker Compose to Create a Local PostgreSQL Instance
+
+- this will connect your local project to the local postgres container pulled in the docker compose
+
+#### Step 2: Run make to initialize the project
+
+- this will create the tables and insert test record to begin interacting with the db
+
 ```bash
-docker-compose up -d
+make init
+```
+
+#### Step 3: Tear down the environment once completed
+
+- to kill the local postgres container instance, run the following command
+
+```bash
+make clean
 ```

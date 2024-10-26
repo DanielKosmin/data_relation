@@ -34,6 +34,9 @@ public class DataRelationServiceHandler {
     if (e instanceof BadSqlGrammarException) {
       return badRequestResponse(e.getCause().getMessage());
     }
+    if (e instanceof RuntimeException) {
+      return internalServerErrorResponse("DB Connection Strings not setup correctly");
+    }
     return internalServerErrorResponse(e.getMessage());
   }
 }
