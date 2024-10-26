@@ -1,0 +1,11 @@
+### DELETE Drop all table records
+DELETE {{DATA_RELATION_BASE_URL}}/table_queries/v1/clear_records?credit=true&checking=true&dropTables=true
+
+### DELETE All Tables Records
+DELETE {{DATA_RELATION_BASE_URL}}/table_queries/v1/clear_records?credit=true&checking=true
+
+### DELETE Credit Table Records
+DELETE {{DATA_RELATION_BASE_URL}}/table_queries/v1/clear_records?credit=true
+
+### DELETE Checking Table Records
+DELETE {{DATA_RELATION_BASE_URL}}/table_queries/v1/clear_records?checking=true

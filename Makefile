@@ -2,7 +2,7 @@
 
 DATA_RELATION_BASE_URL ?= http://localhost:8080
 
-init: start-database run-app create-tables populate-db
+init: start-database run-app drop-existing-tables create-tables populate-db
 
 start-database:
 	@echo "Starting Docker Compose for PostgreSQL..."
@@ -12,10 +12,9 @@ run-app:
 	@echo "Building and starting the application..."
 	@./gradlew clean bootRun > /dev/null 2>&1 & APP_PID=$$! && echo $$! > app.pid
 
-
-create-tables: wait-for-app
-	@echo "Creating the database tables..."
-	@OUTPUT=$$(curl -s -X POST $(DATA_RELATION_BASE_URL)/table_queries/v1/create); \
+drop-existing-tables: wait-for-app
+	@/bin/echo -n "Dropping existing Database Records..."
+	@OUTPUT=$$(curl -s -X DELETE "$(DATA_RELATION_BASE_URL)/table_queries/v1/clear_records?credit=true&checking=true&dropTables=true"); \
 	echo "$$OUTPUT"; \
 	if echo "$$OUTPUT" | grep -q "DB Connection Strings not setup correctly"; then \
 		echo "Exiting Makefile due to error: $$OUTPUT"; \
@@ -24,8 +23,12 @@ create-tables: wait-for-app
 		exit 1; \
 	fi
 
+create-tables:
+	@echo "Creating the database tables..."
+	@curl -s -X POST $(DATA_RELATION_BASE_URL)/table_queries/v1/create
+
 populate-db:
-	@echo "Uploading banking CSV..."
+	@echo "\nUploading banking CSV..."
 	@curl -X POST $(DATA_RELATION_BASE_URL)/table_queries/v1/insert \
 		-H "Content-Type: multipart/form-data" \
 		-F "file=@http/insert/checking_records.csv"

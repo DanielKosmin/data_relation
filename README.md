@@ -18,7 +18,13 @@ spring:
 
 #### Step 2: Run make to initialize the project
 
-- this will create the tables and insert test record to begin interacting with the db
+**IMPORTANT**
+
+- this will create a completely new instance and do the following:
+  - ensure docker-compose instance of postgres is up
+  - drop the existing tables of the database and recreate the tables
+  - fill the tables with [test data](http/insert)
+- you will be able to interact with the project locally from a clean slate
 
 ```bash
 make init

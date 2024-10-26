@@ -10,4 +10,7 @@ public interface DbOperationsService {
   void insertCheckingInformation(CheckingModel checkingModel);
 
   void insertCreditInformation(CreditModel creditModel);
+
+  void clearTablesRecords(
+      boolean clearCreditTable, boolean clearCheckingTable, boolean isDropTablesRequest);
 }

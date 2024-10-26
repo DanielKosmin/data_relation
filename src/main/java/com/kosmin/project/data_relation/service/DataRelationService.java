@@ -5,9 +5,11 @@ import static com.kosmin.project.data_relation.util.ResponseEntityUtil.acceptedR
 import static com.kosmin.project.data_relation.util.ResponseEntityUtil.badRequestResponse;
 import static com.kosmin.project.data_relation.util.ResponseEntityUtil.createdResponse;
 
+import com.kosmin.project.data_relation.exception.InvalidQueryParamException;
 import com.kosmin.project.data_relation.model.Response;
 import com.kosmin.project.data_relation.service.async.service.AsyncCsvProcessingService;
 import com.kosmin.project.data_relation.service.database.operations.DbOperationsService;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -41,6 +43,20 @@ public class DataRelationService {
       return badRequestResponse(
           "Input must be a non empty csv file with filename including either "
               + "'credit' or 'checking' to indicate which table to insert");
+    }
+  }
+
+  public ResponseEntity<Response> deleteTableRecords(
+      Boolean credit, Boolean checking, Boolean dropTables) {
+    boolean clearCreditTable = Optional.ofNullable(credit).orElse(false);
+    boolean clearCheckingTable = Optional.ofNullable(checking).orElse(false);
+    boolean isDropTablesRequest = Optional.ofNullable(dropTables).orElse(false);
+    if (clearCreditTable || clearCheckingTable) {
+      dbOperationsService.clearTablesRecords(
+          clearCreditTable, clearCheckingTable, isDropTablesRequest);
+      return ResponseEntity.noContent().build();
+    } else {
+      throw new InvalidQueryParamException("Invalid Query Param Combo", credit, checking);
     }
   }
 }

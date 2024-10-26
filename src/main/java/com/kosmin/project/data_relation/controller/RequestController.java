@@ -4,6 +4,7 @@ import com.kosmin.project.data_relation.model.Response;
 import com.kosmin.project.data_relation.service.DataRelationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -25,5 +26,13 @@ public class RequestController {
   @PostMapping("insert")
   public ResponseEntity<Response> insertTableRecords(@RequestParam("file") MultipartFile file) {
     return dataRelationService.insertTableRecords(file);
+  }
+
+  @DeleteMapping("clear_records")
+  public ResponseEntity<Response> clearTableRecords(
+      @RequestParam(required = false) Boolean credit,
+      @RequestParam(required = false) Boolean checking,
+      @RequestParam(required = false) Boolean dropTables) {
+    return dataRelationService.deleteTableRecords(credit, checking, dropTables);
   }
 }

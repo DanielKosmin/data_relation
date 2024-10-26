@@ -3,6 +3,7 @@ package com.kosmin.project.data_relation.service.database.operations;
 import com.kosmin.project.data_relation.model.repository.CheckingModel;
 import com.kosmin.project.data_relation.model.repository.CreditModel;
 import com.kosmin.project.data_relation.repository.create.CreateTables;
+import com.kosmin.project.data_relation.repository.delete.DeleteTableRows;
 import com.kosmin.project.data_relation.repository.insert.InsertCheckingRecords;
 import com.kosmin.project.data_relation.repository.insert.InsertCreditRecords;
 import lombok.RequiredArgsConstructor;
@@ -15,6 +16,7 @@ public class DbOperationsServiceImpl implements DbOperationsService {
   private final CreateTables createTables;
   private final InsertCheckingRecords insertCheckingRecords;
   private final InsertCreditRecords insertCreditRecords;
+  private final DeleteTableRows deleteTableRows;
 
   @Override
   public void createTables() {
@@ -29,5 +31,11 @@ public class DbOperationsServiceImpl implements DbOperationsService {
   @Override
   public void insertCreditInformation(CreditModel creditModel) {
     insertCreditRecords.insertCreditRecords(creditModel);
+  }
+
+  @Override
+  public void clearTablesRecords(
+      boolean clearCreditTable, boolean clearCheckingTable, boolean isDropTablesRequest) {
+    deleteTableRows.clearTableRows(clearCreditTable, clearCheckingTable, isDropTablesRequest);
   }
 }

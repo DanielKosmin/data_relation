@@ -31,3 +31,15 @@ queries:
       INSERT INTO credit_records (transaction_date, transaction_description, transaction_category, transaction_type, 
       transaction_amount) 
       VALUES(:transactionDate, :transactionDescription, :transactionCategory, :transactionType, :transactionAmount)
+
+    clear-checking-records: |
+      DELETE FROM checking_records
+
+    drop-checking-records: |
+      DROP TABLE IF EXISTS checking_records;
+
+    clear-credit-records: |
+      DELETE FROM credit_records
+
+    drop-credit-records: |
+      DROP TABLE IF EXISTS credit_records;
