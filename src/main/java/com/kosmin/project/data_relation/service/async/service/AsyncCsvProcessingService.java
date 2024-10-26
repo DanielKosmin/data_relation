@@ -1,19 +1,14 @@
-package com.kosmin.project.data_relation.service.asyncService;
+package com.kosmin.project.data_relation.service.async.service;
 
 import static com.kosmin.project.data_relation.util.DataRelationUtil.fileType;
 import static com.kosmin.project.data_relation.util.DataRelationUtil.parseTransactionDate;
-import static com.kosmin.project.data_relation.util.DbModelBuilderUtil.buildCheckingDbModel;
-import static com.kosmin.project.data_relation.util.DbModelBuilderUtil.buildCreditDbModel;
 
 import com.kosmin.project.data_relation.model.CsvModel;
-import com.kosmin.project.data_relation.model.Type;
-import com.kosmin.project.data_relation.repository.CheckingAccountRepository;
-import com.kosmin.project.data_relation.repository.CreditCardRepository;
+import com.kosmin.project.data_relation.service.repository.service.DbInsertionService;
 import com.opencsv.bean.CsvToBean;
 import com.opencsv.bean.CsvToBeanBuilder;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
-import java.util.Date;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
@@ -25,9 +20,7 @@ import org.springframework.web.multipart.MultipartFile;
 @Slf4j
 @RequiredArgsConstructor
 public class AsyncCsvProcessingService {
-
-  private final CheckingAccountRepository checkingAccountRepository;
-  private final CreditCardRepository creditCardRepository;
+  private final DbInsertionService dbInsertionService;
 
   @Async
   @SneakyThrows
@@ -42,25 +35,11 @@ public class AsyncCsvProcessingService {
           .parse()
           .forEach(
               csvModel ->
-                  saveTableRow(
+                  dbInsertionService.saveTableRow(
                       csvModel,
                       parseTransactionDate(csvModel.getTransactionDate()),
                       fileType(file)));
     }
     log.info("Completed Table Insertions");
-  }
-
-  private void saveTableRow(CsvModel csvModel, Date formattedDate, Type type) {
-    final boolean validInsertModel = formattedDate != null && type != null;
-    if (validInsertModel) {
-      switch (type) {
-        case CHECKING ->
-            checkingAccountRepository.save(buildCheckingDbModel(csvModel, formattedDate));
-        case CREDIT -> creditCardRepository.save(buildCreditDbModel(csvModel, formattedDate));
-      }
-    } else {
-      log.error(
-          "Invalid Insert Model for Model: {}, Date: {}, Type: {}", csvModel, formattedDate, type);
-    }
   }
 }

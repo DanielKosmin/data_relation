@@ -12,6 +12,7 @@ import lombok.NoArgsConstructor;
 @Builder
 public class CsvModel {
 
+  // common
   @CsvBindByName(column = "Transaction Date")
   private String transactionDate;
 

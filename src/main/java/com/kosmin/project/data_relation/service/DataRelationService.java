@@ -5,7 +5,7 @@ import static com.kosmin.project.data_relation.util.ResponseEntityUtil.acceptedR
 import static com.kosmin.project.data_relation.util.ResponseEntityUtil.badRequestResponse;
 
 import com.kosmin.project.data_relation.model.Response;
-import com.kosmin.project.data_relation.service.asyncService.AsyncCsvProcessingService;
+import com.kosmin.project.data_relation.service.async.service.AsyncCsvProcessingService;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import org.springframework.http.ResponseEntity;
