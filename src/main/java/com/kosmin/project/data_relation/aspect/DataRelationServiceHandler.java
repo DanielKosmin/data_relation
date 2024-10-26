@@ -31,10 +31,14 @@ public class DataRelationServiceHandler {
   private ResponseEntity<Response> handleException(Exception e) {
     log.error(e.getMessage());
     // trying to create tables when they already exist
-    if (e instanceof BadSqlGrammarException) {
+    if (e instanceof BadSqlGrammarException
+        && e.getCause().getMessage().toLowerCase().contains("already exists")) {
       return badRequestResponse(e.getCause().getMessage());
     }
-    if (e instanceof RuntimeException) {
+    if (e instanceof RuntimeException
+        && e.getMessage()
+            .equalsIgnoreCase(
+                "Driver org.postgresql.Driver claims to not accept jdbcUrl, ${POSTGRESQL_URL}")) {
       return internalServerErrorResponse("DB Connection Strings not setup correctly");
     }
     return internalServerErrorResponse(e.getMessage());
