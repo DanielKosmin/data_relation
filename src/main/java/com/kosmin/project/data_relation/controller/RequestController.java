@@ -17,6 +17,11 @@ public class RequestController {
 
   private final DataRelationService dataRelationService;
 
+  @PostMapping("create")
+  public ResponseEntity<Response> createTables() {
+    return dataRelationService.createTables();
+  }
+
   @PostMapping("insert")
   public ResponseEntity<Response> insertTableRecords(@RequestParam("file") MultipartFile file) {
     return dataRelationService.insertTableRecords(file);

@@ -4,6 +4,8 @@ spring:
       core-pool-size: 5
       max-pool-size: 10
       queue-capacity: 100
+  config:
+    import: queries.yml
   profiles:
     active: ${SPRING_PROFILE:local}
   datasource:
@@ -11,14 +13,3 @@ spring:
     username: ${POSTGRESQL_USERNAME}
     password: ${POSTGRESQL_PASSWORD}
     driver-class-name: org.postgresql.Driver
-  jpa:
-    hibernate:
-      ddl-auto: update
-    show-sql: false
-    properties:
-      hibernate:
-        format_sql: true
-        transaction:
-          jta:
-            platform: none
-    open-in-view: off

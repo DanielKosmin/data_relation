@@ -1,0 +1,2 @@
+### POST create tables
+POST {{DATA_RELATION_BASE_URL}}/table_queries/v1/create

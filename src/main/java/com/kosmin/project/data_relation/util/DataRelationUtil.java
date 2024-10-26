@@ -1,10 +1,10 @@
 package com.kosmin.project.data_relation.util;
 
 import com.kosmin.project.data_relation.model.Type;
+import java.sql.Date;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.Optional;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -42,7 +42,8 @@ public class DataRelationUtil {
     for (String format : formats) {
       try {
         final SimpleDateFormat sdf = new SimpleDateFormat(format);
-        return sdf.parse(dateString);
+        final java.util.Date parsedDate = sdf.parse(dateString);
+        return new Date(parsedDate.getTime());
       } catch (ParseException e) {
         // Continue trying other formats
       }

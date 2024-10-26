@@ -3,9 +3,11 @@ package com.kosmin.project.data_relation.service;
 import static com.kosmin.project.data_relation.util.DataRelationUtil.isValidCsvFile;
 import static com.kosmin.project.data_relation.util.ResponseEntityUtil.acceptedResponse;
 import static com.kosmin.project.data_relation.util.ResponseEntityUtil.badRequestResponse;
+import static com.kosmin.project.data_relation.util.ResponseEntityUtil.createdResponse;
 
 import com.kosmin.project.data_relation.model.Response;
 import com.kosmin.project.data_relation.service.async.service.AsyncCsvProcessingService;
+import com.kosmin.project.data_relation.service.database.operations.DbOperationsService;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import org.springframework.http.ResponseEntity;
@@ -17,6 +19,12 @@ import org.springframework.web.multipart.MultipartFile;
 public class DataRelationService {
 
   private final AsyncCsvProcessingService asyncCsvProcessingService;
+  private final DbOperationsService dbOperationsService;
+
+  public ResponseEntity<Response> createTables() {
+    dbOperationsService.createTables();
+    return createdResponse("Tables(s) Created Successfully");
+  }
 
   @SneakyThrows
   public ResponseEntity<Response> insertTableRecords(MultipartFile file) {
