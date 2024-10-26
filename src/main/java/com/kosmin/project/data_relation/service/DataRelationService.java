@@ -9,13 +9,14 @@ import com.kosmin.project.data_relation.model.Response;
 import com.kosmin.project.data_relation.service.async.service.AsyncCsvProcessingService;
 import com.kosmin.project.data_relation.service.database.operations.DbOperationsService;
 import lombok.RequiredArgsConstructor;
-import lombok.SneakyThrows;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class DataRelationService {
 
   private final AsyncCsvProcessingService asyncCsvProcessingService;
@@ -26,10 +27,15 @@ public class DataRelationService {
     return createdResponse("Tables(s) Created Successfully");
   }
 
-  @SneakyThrows
   public ResponseEntity<Response> insertTableRecords(MultipartFile file) {
     if (isValidCsvFile(file)) {
-      asyncCsvProcessingService.handleCsvProcessing(file);
+      asyncCsvProcessingService
+          .handleCsvProcessing(file)
+          .exceptionally(
+              e -> {
+                log.error(e.getCause().getMessage());
+                return null;
+              });
       return acceptedResponse("CSV File Successfully received and processing");
     } else {
       return badRequestResponse(

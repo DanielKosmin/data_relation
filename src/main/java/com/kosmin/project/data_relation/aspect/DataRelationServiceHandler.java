@@ -39,7 +39,8 @@ public class DataRelationServiceHandler {
         && e.getMessage()
             .equalsIgnoreCase(
                 "Driver org.postgresql.Driver claims to not accept jdbcUrl, ${POSTGRESQL_URL}")) {
-      return internalServerErrorResponse("DB Connection Strings not setup correctly");
+      return internalServerErrorResponse(
+          "DB Connection Strings not setup correctly for Table Creation");
     }
     return internalServerErrorResponse(e.getMessage());
   }
