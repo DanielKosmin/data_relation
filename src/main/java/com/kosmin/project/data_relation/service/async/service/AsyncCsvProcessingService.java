@@ -44,7 +44,7 @@ public class AsyncCsvProcessingService {
                       parseTransactionDate(csvModel.getTransactionDate()),
                       fileType(file)));
     }
-    log.info("Completed Table Insertions");
+    log.info("Completed Table Insertions for {}", file.getOriginalFilename());
   }
 
   private void saveTableRow(CsvModel csvModel, Date formattedDate, Type type) {

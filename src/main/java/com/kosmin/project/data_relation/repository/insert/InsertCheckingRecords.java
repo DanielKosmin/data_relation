@@ -24,7 +24,6 @@ public class InsertCheckingRecords {
     params.put("transactionType", checkingModel.getTransactionType());
     params.put("transactionAmount", checkingModel.getTransactionAmount());
     params.put("balance", checkingModel.getBalance());
-    log.info("{}", params);
 
     final int insertionResponse =
         jdbcTemplate.update(sqlQueriesConfig.getMap().get("insert-checking-records"), params);

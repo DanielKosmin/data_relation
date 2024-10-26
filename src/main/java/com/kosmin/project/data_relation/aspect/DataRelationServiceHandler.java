@@ -1,5 +1,6 @@
 package com.kosmin.project.data_relation.aspect;
 
+import static com.kosmin.project.data_relation.util.ResponseEntityUtil.badRequestResponse;
 import static com.kosmin.project.data_relation.util.ResponseEntityUtil.internalServerErrorResponse;
 
 import com.kosmin.project.data_relation.model.Response;
@@ -9,6 +10,7 @@ import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.springframework.http.ResponseEntity;
+import org.springframework.jdbc.BadSqlGrammarException;
 import org.springframework.stereotype.Component;
 
 @Aspect
@@ -28,6 +30,10 @@ public class DataRelationServiceHandler {
 
   private ResponseEntity<Response> handleException(Exception e) {
     log.error(e.getMessage());
+    // trying to create tables when they already exist
+    if (e instanceof BadSqlGrammarException) {
+      return badRequestResponse(e.getCause().getMessage());
+    }
     return internalServerErrorResponse(e.getMessage());
   }
 }

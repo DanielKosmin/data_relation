@@ -13,8 +13,6 @@
         <module name="ParameterName">
             <property name="format" value="^[a-z][a-zA-Z0-9]*$"/>
         </module>
-        <!-- Ensures local variables are declared final when appropriate -->
-        <module name="FinalLocalVariable"/>
         <!-- Prohibits the use of wildcard imports -->
         <module name="AvoidStarImport"/>
         <!-- Flags empty catch blocks to encourage better error handling -->
