@@ -60,6 +60,14 @@ records. Technologies/Configurations used will include:
 ./gradlew spotlessApply
 ```
 
+#### DistTar
+
+- command used to tar the entire project easing deployment process
+
+```bash
+./gradlew distTar
+```
+
 ### Initialize the project with data to begin interacting with it
 
 ##### Step 1 create an application-local-yml
@@ -99,4 +107,13 @@ make init
 
 ```bash
 make clean
+```
+
+### Deploy the project tar to a Docker Image
+
+```bash
+docker build -t data_relation:latest .
+```
+```bash 
+docker run --name data_relation_container -p 8080:8080 data_relation
 ```

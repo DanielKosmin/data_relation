@@ -1,0 +1,23 @@
+tasks.named('distZip') {
+  dependsOn 'bootJar'
+  dependsOn 'jar'
+}
+
+tasks.named('distTar') {
+  dependsOn 'bootJar'
+  dependsOn 'jar'
+}
+
+distributions {
+  main {
+    distributionBaseName = 'data_relation'
+    contents {
+      from('build/libs') {
+        include '*.jar'
+      }
+      from('src/main/resources') {
+        include '**/*'
+      }
+    }
+  }
+}
