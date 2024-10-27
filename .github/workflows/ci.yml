@@ -57,7 +57,7 @@ jobs:
         run: docker-compose down
 
   build:
-    if: github.event_name == 'pull_request' || github.event_name == 'push'
+    if: github.event_name == 'push'
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Code
@@ -70,7 +70,7 @@ jobs:
           distribution: 'temurin'
 
       - name: Build
-        run: ./gradlew build
+        run: ./gradlew build -x test
 
   docker_publish:
     needs: unit_tests
