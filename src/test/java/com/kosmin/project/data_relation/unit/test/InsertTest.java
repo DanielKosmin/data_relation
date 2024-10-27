@@ -1,6 +1,5 @@
-package com.kosmin.project.data_relation.unit.test.insert;
+package com.kosmin.project.data_relation.unit.test;
 
-import com.kosmin.project.data_relation.config.SqlQueriesConfig;
 import com.kosmin.project.data_relation.model.repository.CheckingModel;
 import com.kosmin.project.data_relation.model.repository.CreditModel;
 import com.kosmin.project.data_relation.repository.insert.InsertCheckingRecords;
@@ -9,42 +8,27 @@ import java.math.BigDecimal;
 import java.sql.Date;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Properties;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.beans.factory.config.YamlPropertiesFactoryBean;
-import org.springframework.core.io.ClassPathResource;
-import org.springframework.core.io.Resource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 
-@ExtendWith(MockitoExtension.class)
-public class InsertTest {
+public class InsertTest extends BaseUnitTest {
 
   @Mock private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
-  private static final String INSERT_CHECKING_RECORDS = "insert-checking-records";
-  private static final String INSERT_INTO_CREDIT_TABLE = "insert-credit-records";
   private InsertCheckingRecords insertCheckingRecords;
   private InsertCreditRecords insertCreditRecords;
-  private SqlQueriesConfig sqlQueriesConfig;
+  private String insertCheckingQuery;
+  private String insertCreditQuery;
 
   @BeforeEach
   void setUp() {
-    Properties properties = loadYamlProperties();
-    String checkingQuery = properties.getProperty("queries.map." + INSERT_CHECKING_RECORDS);
-    String creditQuery = properties.getProperty("queries.map." + INSERT_INTO_CREDIT_TABLE);
-
-    sqlQueriesConfig =
-        new SqlQueriesConfig(
-            Map.of(
-                INSERT_CHECKING_RECORDS, checkingQuery,
-                INSERT_INTO_CREDIT_TABLE, creditQuery));
-
+    super.setUp();
+    insertCheckingQuery = sqlQueriesConfig.getMap().get(INSERT_CHECKING_RECORDS);
+    insertCreditQuery = sqlQueriesConfig.getMap().get(INSERT_INTO_CREDIT_TABLE);
     insertCheckingRecords = new InsertCheckingRecords(namedParameterJdbcTemplate, sqlQueriesConfig);
     insertCreditRecords = new InsertCreditRecords(namedParameterJdbcTemplate, sqlQueriesConfig);
   }
@@ -66,14 +50,11 @@ public class InsertTest {
     params.put("transactionType", bankingAccountModel.getTransactionType());
     params.put("transactionAmount", bankingAccountModel.getTransactionAmount());
     params.put("balance", bankingAccountModel.getBalance());
-    Mockito.when(
-            namedParameterJdbcTemplate.update(
-                sqlQueriesConfig.getMap().get(INSERT_CHECKING_RECORDS), params))
-        .thenReturn(1);
+    Mockito.when(namedParameterJdbcTemplate.update(insertCheckingQuery, params)).thenReturn(1);
     Assertions.assertDoesNotThrow(
         () -> insertCheckingRecords.insertCheckingRecords(bankingAccountModel));
     Mockito.verify(namedParameterJdbcTemplate, Mockito.times(1))
-        .update(sqlQueriesConfig.getMap().get(INSERT_CHECKING_RECORDS), params);
+        .update(insertCheckingQuery, params);
   }
 
   @Test
@@ -93,20 +74,9 @@ public class InsertTest {
     params.put("transactionCategory", creditCardRecordsModel.getTransactionCategory());
     params.put("transactionType", creditCardRecordsModel.getTransactionType());
     params.put("transactionAmount", creditCardRecordsModel.getTransactionAmount());
-    Mockito.when(
-            namedParameterJdbcTemplate.update(
-                sqlQueriesConfig.getMap().get(INSERT_INTO_CREDIT_TABLE), params))
-        .thenReturn(1);
+    Mockito.when(namedParameterJdbcTemplate.update(insertCreditQuery, params)).thenReturn(1);
     Assertions.assertDoesNotThrow(
         () -> insertCreditRecords.insertCreditRecords(creditCardRecordsModel));
-    Mockito.verify(namedParameterJdbcTemplate, Mockito.times(1))
-        .update(sqlQueriesConfig.getMap().get(INSERT_INTO_CREDIT_TABLE), params);
-  }
-
-  private Properties loadYamlProperties() {
-    final Resource resource = new ClassPathResource("queries.yml");
-    final YamlPropertiesFactoryBean yamlPropertiesFactoryBean = new YamlPropertiesFactoryBean();
-    yamlPropertiesFactoryBean.setResources(resource);
-    return yamlPropertiesFactoryBean.getObject();
+    Mockito.verify(namedParameterJdbcTemplate, Mockito.times(1)).update(insertCreditQuery, params);
   }
 }

@@ -2,6 +2,7 @@ package com.kosmin.project.data_relation.integration.test;
 
 import com.kosmin.project.data_relation.model.Response;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.http.HttpStatus;
@@ -12,6 +13,7 @@ import org.springframework.util.MultiValueMap;
 public class TableInsertionIntegrationTest extends BaseIntegrationTest {
 
   @Test
+  @DisplayName("Test inserting records into checking table")
   public void postCheckingTableRow() {
     final String csvContent =
         """
@@ -24,6 +26,7 @@ public class TableInsertionIntegrationTest extends BaseIntegrationTest {
   }
 
   @Test
+  @DisplayName("Test inserting into credit table")
   public void postCreditTableRow() {
     final String csvContent =
         """
