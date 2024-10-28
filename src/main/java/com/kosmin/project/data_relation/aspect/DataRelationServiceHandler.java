@@ -3,6 +3,7 @@ package com.kosmin.project.data_relation.aspect;
 import static com.kosmin.project.data_relation.util.ResponseEntityUtil.badRequestResponse;
 import static com.kosmin.project.data_relation.util.ResponseEntityUtil.internalServerErrorResponse;
 
+import com.kosmin.project.data_relation.exception.PrimaryKeyNotFoundException;
 import com.kosmin.project.data_relation.model.Response;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -41,6 +42,9 @@ public class DataRelationServiceHandler {
                 "Driver org.postgresql.Driver claims to not accept jdbcUrl, ${POSTGRESQL_URL}")) {
       return internalServerErrorResponse(
           "DB Connection Strings not setup correctly for Table Creation");
+    }
+    if (e instanceof PrimaryKeyNotFoundException) {
+      return badRequestResponse(e.getMessage());
     }
     return internalServerErrorResponse(e.getMessage());
   }

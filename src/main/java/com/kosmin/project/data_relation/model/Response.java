@@ -2,6 +2,7 @@ package com.kosmin.project.data_relation.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -17,4 +18,5 @@ public class Response {
   private String status;
   private String message;
   private String errorMessage;
+  private List<String> validationErrors;
 }
