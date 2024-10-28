@@ -2,6 +2,9 @@ package com.kosmin.project.data_relation.unit.test;
 
 import com.kosmin.project.data_relation.config.SqlQueriesConfig;
 import com.kosmin.project.data_relation.config.TableInsertConfig;
+import jakarta.validation.Validation;
+import jakarta.validation.Validator;
+import jakarta.validation.ValidatorFactory;
 import java.util.Map;
 import java.util.Properties;
 import org.junit.jupiter.api.BeforeEach;
@@ -14,6 +17,7 @@ import org.springframework.core.io.Resource;
 @ExtendWith(MockitoExtension.class)
 public abstract class BaseUnitTest {
 
+  protected Validator validator;
   protected SqlQueriesConfig sqlQueriesConfig;
   protected TableInsertConfig tableInsertConfig;
   protected static final String INSERT_CHECKING_RECORDS = "insert-checking-records";
@@ -27,6 +31,9 @@ public abstract class BaseUnitTest {
 
   @BeforeEach
   void setUp() {
+    ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
+    validator = factory.getValidator();
+
     Properties properties = loadYamlProperties();
     String checkingQuery = properties.getProperty("queries.map." + INSERT_CHECKING_RECORDS);
     String creditQuery = properties.getProperty("queries.map." + INSERT_INTO_CREDIT_TABLE);
