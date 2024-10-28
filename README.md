@@ -6,7 +6,7 @@ records. Technologies/Configurations used will include:
 - Java
 - Springboot
 - Gradle
-- PostgreSQL
+- PostgresSQL
 - Docker
 - Docker Compose
 - GitHub Actions
@@ -17,8 +17,8 @@ records. Technologies/Configurations used will include:
 #### Gradle Build
 
 - this is one of the first commands that should be run to ensure all dependencies are installed correctly
-- ensure your [application-local](#step-1-create-an-application-local-yml) is setup prior to building
-- this will also ensure the [precommit hook](scripts/pre-commit) is set up correctly
+- ensure your [application-local](#step-1-create-an-application-local-yml) is set up prior to building
+- this will also ensure the [pre-commit hook](scripts/pre-commit) is set up correctly
 
 ```bash
 ./gradlew clean build
@@ -27,7 +27,7 @@ records. Technologies/Configurations used will include:
 #### Unit Tests
 
 - this will run all unit tests in the project
-- This also runs as part of the [precommit hook](scripts/pre-commit)
+- This also runs as part of the [pre-commit hook](scripts/pre-commit)
 
 ```bash
 ./gradlew unitTest
@@ -44,7 +44,7 @@ records. Technologies/Configurations used will include:
 #### Checkstyle
 
 - Checkstyle is a code analysis tool used to ensure objective Java standards are being met
-- This also runs as part of the [precommit hook](scripts/pre-commit)
+- This also runs as part of the [pre-commit hook](scripts/pre-commit)
 
 ```bash
 ./gradlew checkstyleMain checkstyleTest
@@ -54,7 +54,7 @@ records. Technologies/Configurations used will include:
 
 - Spotless is a code formatting plugin for gradle. In this specific project, google java format is used to auto format
   as part of the build process
-- This also runs as part of the [precommit hook](scripts/pre-commit)
+- This also runs as part of the [pre-commit hook](scripts/pre-commit)
 
 ```bash
 ./gradlew spotlessApply

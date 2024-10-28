@@ -1,0 +1,11 @@
+### PUT update foreign key mapping
+PUT {{DATA_RELATION_BASE_URL}}/table_queries/v1/update
+Content-Type: application/json
+
+{
+  "checkingStartDate": "2024-10-01",
+  "checkingEndDate": "2024-10-31",
+  "checkingTransactionType": "Debit",
+  "checkingTransactionDescription": "Credit Card Payment",
+  "creditTransactionType": "Sale"
+}

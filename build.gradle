@@ -58,7 +58,8 @@ dependencies {
 	implementation 'org.aspectj:aspectjweaver'
 
 	// Test dependencies
-	testImplementation 'org.awaitility:awaitility:4.2.2'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'org.springframework.boot:spring-boot-starter-webflux'
+	testImplementation 'org.hibernate.validator:hibernate-validator:8.0.1.Final'
+	testImplementation 'jakarta.validation:jakarta.validation-api:3.1.0'
 }

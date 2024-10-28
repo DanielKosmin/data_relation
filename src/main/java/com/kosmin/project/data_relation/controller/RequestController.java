@@ -1,11 +1,16 @@
 package com.kosmin.project.data_relation.controller;
 
+import com.kosmin.project.data_relation.model.ForeignKeyMappingPayload;
 import com.kosmin.project.data_relation.model.Response;
 import com.kosmin.project.data_relation.service.DataRelationService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -14,6 +19,7 @@ import org.springframework.web.multipart.MultipartFile;
 @RestController
 @RequestMapping("table_queries/v1")
 @RequiredArgsConstructor
+@Validated
 public class RequestController {
 
   private final DataRelationService dataRelationService;
@@ -34,5 +40,11 @@ public class RequestController {
       @RequestParam(required = false) Boolean checking,
       @RequestParam(required = false) Boolean dropTables) {
     return dataRelationService.deleteTableRecords(credit, checking, dropTables);
+  }
+
+  @PutMapping("update")
+  public ResponseEntity<Response> updateTableRecords(
+      @Valid @RequestBody ForeignKeyMappingPayload payload) {
+    return dataRelationService.updateTableRecords(payload);
   }
 }

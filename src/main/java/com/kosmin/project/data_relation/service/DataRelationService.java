@@ -6,12 +6,14 @@ import static com.kosmin.project.data_relation.util.ResponseEntityUtil.badReques
 import static com.kosmin.project.data_relation.util.ResponseEntityUtil.createdResponse;
 
 import com.kosmin.project.data_relation.exception.InvalidQueryParamException;
+import com.kosmin.project.data_relation.model.ForeignKeyMappingPayload;
 import com.kosmin.project.data_relation.model.Response;
 import com.kosmin.project.data_relation.service.async.service.AsyncCsvProcessingService;
 import com.kosmin.project.data_relation.service.database.operations.DbOperationsService;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -58,5 +60,10 @@ public class DataRelationService {
     } else {
       throw new InvalidQueryParamException("Invalid Query Param Combo", credit, checking);
     }
+  }
+
+  public ResponseEntity<Response> updateTableRecords(ForeignKeyMappingPayload payload) {
+    return ResponseEntity.status(HttpStatus.CREATED)
+        .body(dbOperationsService.updateForeignKeys(payload));
   }
 }
